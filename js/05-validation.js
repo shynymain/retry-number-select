@@ -267,21 +267,35 @@ function isCalcDigits(ds, vs){
 function transition59PatternLabels(ds, vs){
   const labels=[];
   if(!ds || ds.length!==3) return labels;
+
   const add=x=>{ if(x && !labels.includes(x)) labels.push(x); };
+
   const past1=ds[0], past2=ds[1], past3=ds[2];
   const rawPast1=(vs&&vs.length===3)?vs[0]:null;
   const past1As5=(past1===5 || rawPast1===14);
+
   const sum32=(past3+past2)%10;
   const sum21=(past2+past1)%10;
+
   if(sum32===5 && sum21===5) add('5→5');
   if(sum32===5 && past1As5) add('5→5着');
+
+  if(sum32===5 && sum21===9) add('5→9');
+  if(sum32===5 && past1===9) add('5→9着');
+
+  if(sum32===9 && sum21===5) add('9→5');
+  if(sum32===9 && past1As5) add('9→5着');
+
   if(sum32===9 && sum21===9) add('9→9');
   if(sum32===9 && past1===9) add('9→9着');
+
   if(ds.every(v=>v===5 || v===9)) add('59系');
   if(ds.every(v=>v===5 || v===6)) add('56系');
   if(ds.every(v=>v===6 || v===9)) add('69系');
+
   return labels;
 }
+                                                             }
 function neighborHorseDigitsForPast1(r,h){
   const no=int(h&&h.no); if(!r || !no) return [];
   const horses=(r.horses||[]);
