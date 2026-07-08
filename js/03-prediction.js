@@ -121,6 +121,11 @@
     const sum21=(past2+past1)%10;
     if(sum32===5 && sum21===5) add('5→5');
     if(sum32===5 && past1As5) add('5→5着');
+   if(sum32===5 && sum21===9) add('5→9');
+if(sum32===5 && past1===9) add('5→9着');
+
+if(sum32===9 && sum21===5) add('9→5');
+if(sum32===9 && past1As5) add('9→5着');
     if(sum32===9 && sum21===9) add('9→9');
     if(sum32===9 && past1===9) add('9→9着');
     if(ds.every(v=>v===5 || v===9)) add('59系');
