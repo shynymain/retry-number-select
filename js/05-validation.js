@@ -265,7 +265,6 @@ function isCalcDigits(ds, vs){
     (p2+p3===v1) || (p2-p3===v1) || (p3-p2===v1);
 }
 function transition59PatternLabels(ds, vs){
-function transition59PatternLabels(ds, vs){
   const labels=[];
   if(!ds || ds.length!==3) return labels;
 
