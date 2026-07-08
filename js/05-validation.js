@@ -267,34 +267,21 @@ function isCalcDigits(ds, vs){
 function transition59PatternLabels(ds, vs){
   const labels=[];
   if(!ds || ds.length!==3) return labels;
-
   const add=x=>{ if(x && !labels.includes(x)) labels.push(x); };
-
   const past1=ds[0], past2=ds[1], past3=ds[2];
   const rawPast1=(vs&&vs.length===3)?vs[0]:null;
   const past1As5=(past1===5 || rawPast1===14);
-
   const sum32=(past3+past2)%10;
   const sum21=(past2+past1)%10;
-
   if(sum32===5 && sum21===5) add('5→5');
   if(sum32===5 && past1As5) add('5→5着');
-
-  if(sum32===5 && sum21===9) add('5→9');
-  if(sum32===5 && past1===9) add('5→9着');
-
-  if(sum32===9 && sum21===5) add('9→5');
-  if(sum32===9 && past1As5) add('9→5着');
-
   if(sum32===9 && sum21===9) add('9→9');
   if(sum32===9 && past1===9) add('9→9着');
-
   if(ds.every(v=>v===5 || v===9)) add('59系');
   if(ds.every(v=>v===5 || v===6)) add('56系');
   if(ds.every(v=>v===6 || v===9)) add('69系');
-
   return labels;
-}                                                             }
+}
 function neighborHorseDigitsForPast1(r,h){
   const no=int(h&&h.no); if(!r || !no) return [];
   const horses=(r.horses||[]);
@@ -964,7 +951,7 @@ function markPatternTable(rows,group){
   return table(['順位','定義','対象馬数','1着数','3着内数','単勝率','複勝率','単勝回収率','人気 平均/中央値'],body,'データなし');
 }
 function markPatternAnalysisSections(rows){
-  const section=(label,rs)=>card(`<div class="title">印分析・好走パターン分析（${esc(label)}）</div><p class="hint">印あり馬は◎/○/▲ごとの定義、印なし馬は共通定義（1桁・2桁・偶数・奇数・上り系・下り系・ゾロ目・挟み・計算・5→5・5→5着・5→9・5→9着・9→5・9→5着・9→9・9→9着・56系・59系・69系・5着・6着・9着・23・32）で分析します。印そのものではなく、どの前走並びの馬が来るかを確認します。</p><h4>◎</h4>${markPatternTable(rs,'◎')}<h4>○</h4>${markPatternTable(rs,'○')}<h4>▲</h4>${markPatternTable(rs,'▲')}<h4>印なし</h4>${markPatternTable(rs,'印なし')}`);
+  const section=(label,rs)=>card(`<div class="title">印分析・好走パターン分析（${esc(label)}）</div><p class="hint">印あり馬は◎/○/▲ごとの定義、印なし馬は共通定義（1桁・2桁・偶数・奇数・上り系・下り系・ゾロ目・挟み・計算・5→5・5→5着・9→9・9→9着・56系・59系・69系・5着・6着・9着・23・32）で分析します。印そのものではなく、どの前走並びの馬が来るかを確認します。</p><h4>◎</h4>${markPatternTable(rs,'◎')}<h4>○</h4>${markPatternTable(rs,'○')}<h4>▲</h4>${markPatternTable(rs,'▲')}<h4>印なし</h4>${markPatternTable(rs,'印なし')}`);
   let html=section('トータル',rows)+markNeighborAnalysisBlock('トータル',rows);
   if(hasRecent30(rows)){ const recent=recent30Rows(rows); html+=section('直近30R',recent)+markNeighborAnalysisBlock('直近30R',recent); }
   return html;
