@@ -1243,10 +1243,19 @@ function ticketBox(name,key,p,rec){const cls=key==='umaren'?'predUmaren':key==='
     const out=[]; const add=x=>{if(x&&!out.includes(x))out.push(x)};
     const sum32=(d.d3+d.d2)%10, sum21=(d.d2+d.d1)%10;
     const past1As5=(d.d1===5 || d.p1===14);
+
     if(sum32===5 && sum21===5) add('5→5');
     if(sum32===5 && past1As5) add('5→5着');
+
+    if(sum32===5 && sum21===9) add('5→9');
+    if(sum32===5 && d.d1===9) add('5→9着');
+
+    if(sum32===9 && sum21===5) add('9→5');
+    if(sum32===9 && past1As5) add('9→5着');
+
     if(sum32===9 && sum21===9) add('9→9');
     if(sum32===9 && d.d1===9) add('9→9着');
+
     const ds=[d.d1,d.d2,d.d3];
     if(ds.every(v=>v===5 || v===9)) add('59系');
     if(ds.every(v=>v===5 || v===6)) add('56系');
