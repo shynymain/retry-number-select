@@ -1,31 +1,837 @@
-:root{--bg:#f6f7fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--main:#2563eb;--red:#dc2626}*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}.app{max-width:980px;margin:0 auto;padding:16px 12px 80px}.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0;box-shadow:0 3px 12px rgba(15,23,42,.04)}h1{font-size:24px;margin:0 0 10px}h2{font-size:18px;margin:10px 0}.hero p,.small,.meta{color:var(--muted);font-size:13px}.homeGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}.bigBtn,.btn{border:0;border-radius:14px;background:var(--main);color:#fff;padding:12px 14px;font-weight:700;cursor:pointer}.bigBtn{min-height:70px;font-size:17px}.btn{font-size:14px;min-height:42px}.btn.blue{background:#0ea5e9}.btn.light{background:#10b981}.btn.gray{background:#64748b}.btn.red{background:var(--red)}.smallBtn{min-height:30px;padding:6px 10px;font-size:12px}.btnRow{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.split{display:flex;align-items:center;justify-content:space-between;gap:10px}.split.mini{margin-bottom:6px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.field label{display:block;font-size:12px;color:var(--muted);margin:0 0 4px}input,select,textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff}select[multiple]{height:auto}textarea{min-height:80px}.sectionTitle{font-weight:800;margin:20px 0 8px;border-left:5px solid var(--main);padding-left:8px}.tableWrap{overflow-x:auto}table{width:100%;border-collapse:collapse;background:#fff}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;white-space:nowrap}th{font-size:12px;color:var(--muted);background:#f8fafc}.raceCard{display:flex;gap:12px}.raceNo{width:54px;height:54px;border-radius:14px;background:#111827;color:white;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;flex:0 0 auto}.raceNo span{font-size:12px;margin-left:2px}.raceMain{flex:1;min-width:0}.raceTitle{font-weight:800;font-size:17px}.resultLine{padding:6px 0;border-bottom:1px dashed #eef2f7}.resultBlock{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:10px;margin:10px 0}.betRow{margin:6px 0}.modalBack{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:12px;z-index:10}.modal{max-width:720px;width:100%;max-height:90vh;overflow:auto;background:white;border-radius:18px;padding:16px}.notice{background:#ecfdf5;border:1px solid #bbf7d0;color:#166534;border-radius:14px;padding:12px;margin:12px 0}.metric{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px}.metric b{font-size:22px}.err{color:var(--red)}@media(max-width:700px){.homeGrid,.grid2,.grid3{grid-template-columns:1fr}.split{align-items:flex-start}.raceCard{display:block}.raceNo{margin-bottom:10px}}
+/* 競馬予想検証アプリ Ver.2 */
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:-apple-system,BlinkMacSystemFont,'Yu Gothic','Hiragino Kaku Gothic ProN',sans-serif;background:#f5f7fb;color:#111827}body{overflow:hidden}.app{height:100vh;max-width:1100px;margin:0 auto;background:#fff;display:flex;flex-direction:column}.header{height:56px;background:linear-gradient(90deg,#0050b8,#0b72d9);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;position:sticky;top:0;z-index:10}.header .homeBtn{position:absolute;left:10px;top:8px;width:auto;margin:0;padding:7px 12px;background:transparent;border:1px solid rgba(255,255,255,.35);border-radius:8px}.header .rightBtn{position:absolute;right:10px;top:8px;width:auto;margin:0;padding:7px 12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4)}.screen{flex:1;overflow:auto;padding:14px}.card{background:#fff;border:1px solid #d7dfed;border-radius:10px;margin:10px 0;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,.03)}.title{font-size:20px;font-weight:800;margin:0 0 10px}.subtle{color:#64748b;font-size:13px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;gap:8px;align-items:center}.pill{display:inline-block;border:1px solid #bfd0ea;background:#eef6ff;color:#075bb5;border-radius:999px;padding:3px 8px;font-size:12px;font-weight:700}.badge{display:inline-block;border-radius:5px;padding:2px 6px;font-size:12px;font-weight:800}.badge.green{background:#e8f7ec;color:#14823b}.badge.red{background:#fff1f2;color:#d71920}.badge.orange{background:#fff3dd;color:#b35c00}.badge.blue{background:#e9f2ff;color:#075bb5}button{width:100%;margin:6px 0;padding:11px 12px;font-size:16px;font-weight:700;border:1px solid #0b65d8;border-radius:8px;background:#0b72d9;color:#fff}button.secondary{background:#fff;color:#075bb5}button.gray{background:#64748b;border-color:#64748b}button.red{background:#dc2626;border-color:#dc2626}button.green{background:#16a34a;border-color:#16a34a}button.small{width:auto;padding:6px 10px;font-size:13px;margin:2px}label{display:block;font-weight:700;margin:8px 0 4px;color:#374151}input,select,textarea{width:100%;border:1px solid #cfd8e6;border-radius:7px;padding:8px;font-size:16px;background:#fff}textarea{min-height:90px}.compact input,.compact select{padding:6px;font-size:14px}.hint{background:#eef6ff;border:1px solid #aac7ee;color:#0751a6;padding:9px;border-radius:8px;font-size:13px;margin:8px 0}.warn{background:#fff7ed;border:1px solid #fdba74;color:#9a3412}.ok{background:#ecfdf5;border:1px solid #86efac;color:#166534}.tableWrap{overflow:auto;border:1px solid #d7dfed;border-radius:8px;max-height:70vh}table{width:100%;border-collapse:collapse;background:#fff}th,td{border:1px solid #e1e8f2;padding:7px 8px;white-space:nowrap;text-align:center;vertical-align:middle}th{background:#f5f7fb;font-weight:800}.left{text-align:left}.stickyMark{position:sticky;left:0;z-index:3;background:#fff}.stickyFrame{position:sticky;left:44px;z-index:3;background:#fff}.stickyNo{position:sticky;left:88px;z-index:3;background:#fff}.frameCell{font-weight:900;color:#fff;border-radius:3px;display:inline-block;min-width:28px;padding:2px 4px}.frame1{background:#fff;color:#111;border:1px solid #999}.frame2{background:#000}.frame3{background:#e60012}.frame4{background:#0068c9}.frame5{background:#ffd400;color:#111}.frame6{background:#159947}.frame7{background:#f08300}.frame8{background:#f06292}.horseNameInput{min-width:9.5em}.oddsInput{width:70px}.shortInput{width:56px}.markCell{font-size:20px;font-weight:900}.raceListItem{display:grid;grid-template-columns:120px 1fr auto;gap:8px;border-bottom:1px solid #e5e7eb;padding:9px 4px;align-items:center}.raceListItem:last-child{border-bottom:none}.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}.tabs button.active{background:#034fb4}.predCard{border:1px solid #d7dfed;border-radius:8px;margin:8px 0;overflow:hidden}.predCard h4{margin:0;padding:8px 10px;background:#eef6ff}.predBody{padding:10px}.predAxis h4{background:#ecfdf5}.predUmaren h4{background:#fff7ed}.predWide h4{background:#fff1f2}.predTrio h4{background:#eff6ff}.miniStats{font-size:12px;border:1px solid #d7dfed;border-radius:7px;overflow:hidden}.miniStats td,.miniStats th{padding:4px}.resultLayout{display:grid;grid-template-columns:1fr 1.45fr;gap:10px}.payGrid{display:grid;grid-template-columns:1fr;gap:8px}.payBox{border:1px solid #d7dfed;border-radius:8px;overflow:hidden}.payBox h4{margin:0;padding:8px;background:#f8fafc}.payRows{padding:8px}.finishRow,.payRow{display:grid;grid-template-columns:46px 58px 1fr 32px;gap:6px;align-items:center;margin:5px 0}.payRow{grid-template-columns:90px 1fr 80px 32px}.summaryCards{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.summaryBox{border:1px solid #d7dfed;border-radius:8px;padding:8px;text-align:center}.reflectionGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.consultRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checkCard{border:1px solid #d7dfed;border-radius:8px;padding:10px}.checkGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.checkLine{display:flex;gap:6px;align-items:center;border:1px solid #e5e7eb;border-radius:7px;padding:8px}.checkLine input{width:auto}.consultTable th,.consultTable td{font-size:13px}.improve{color:red;font-weight:800}.bottomBar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}@media(max-width:760px){.screen{padding:10px}.grid2,.grid3,.grid4,.resultLayout,.reflectionGrid{grid-template-columns:1fr}.summaryCards{grid-template-columns:repeat(2,1fr)}.raceListItem{grid-template-columns:90px 1fr}.raceListItem button{grid-column:1/3}.header{font-size:20px}.bottomBar{grid-template-columns:1fr 1fr}.tabs{grid-template-columns:1fr 1fr 1fr}.tableWrap{max-height:65vh}}
 
-/* Rev907: レース情報入力 出馬表の横幅調整 */
-.horseInputWrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.horseInputTable{table-layout:fixed;min-width:680px}
-.horseInputTable .colNo{width:54px}
-.horseInputTable .colName{width:210px}
-.horseInputTable .colOdds{width:96px}
-.horseInputTable .colPast{width:82px}
-.horseInputTable th,.horseInputTable td{padding:8px 6px}
-.horseNameInput{min-width:9.5em;white-space:nowrap;overflow:visible}
-.oddsInput{min-width:5.6em;text-align:right;font-variant-numeric:tabular-nums}
-.pastInput{min-width:4.2em;text-align:center;font-variant-numeric:tabular-nums}
-@media(max-width:700px){.horseInputTable{min-width:660px}.horseInputTable .colName{width:205px}.horseInputTable .colOdds{width:94px}.horseInputTable .colPast{width:80px}}
-/* Rev908: レース情報入力の出馬表は横スクロール時も馬番を固定表示 */
-.horseInputWrap{position:relative}
-.horseInputTable th:first-child,.horseInputTable td:first-child{
+
+/* ===== Ver2_003a mobile input table adjustment ===== */
+.actionBar{
   position:sticky;
-  left:0;
-  z-index:3;
-  background:#fff;
-  box-shadow:2px 0 0 var(--line);
+  bottom:0;
+  z-index:20;
+  background:rgba(255,255,255,.96);
+  border-top:1px solid #d7dfed;
+  padding:8px 0 calc(8px + env(safe-area-inset-bottom));
+  box-shadow:0 -2px 10px rgba(15,23,42,.08);
 }
-.horseInputTable thead th:first-child{
+.inputTableWrap{
+  max-height:52vh;
+}
+.inputTableWrap table{
+  table-layout:fixed;
+  min-width:640px;
+}
+.inputTableWrap th,
+.inputTableWrap td{
+  padding:5px 4px;
+}
+.inputTableWrap .stickyMark{width:36px;min-width:36px;left:0;}
+.inputTableWrap .stickyFrame{width:40px;min-width:40px;left:36px;}
+.inputTableWrap .stickyNo{width:62px;min-width:62px;left:76px;}
+.inputTableWrap th:nth-child(4),
+.inputTableWrap td:nth-child(4){width:112px;min-width:112px;}
+.inputTableWrap th:nth-child(5),
+.inputTableWrap td:nth-child(5){width:62px;min-width:62px;}
+.inputTableWrap th:nth-child(6),
+.inputTableWrap td:nth-child(6),
+.inputTableWrap th:nth-child(7),
+.inputTableWrap td:nth-child(7),
+.inputTableWrap th:nth-child(8),
+.inputTableWrap td:nth-child(8),
+.inputTableWrap th:nth-child(9),
+.inputTableWrap td:nth-child(9){width:58px;min-width:58px;}
+.inputTableWrap input{padding:6px 4px;font-size:15px;}
+.inputTableWrap .horseNameInput{width:104px;min-width:104px;}
+.inputTableWrap .oddsInput,
+.inputTableWrap .shortInput{width:50px;min-width:50px;}
+@media(max-width:760px){
+  .screen{padding-bottom:92px;}
+  .inputTableWrap{max-height:48vh;}
+  .bottomBar.actionBar{grid-template-columns:1fr 1.7fr;}
+}
+
+
+/* ===== Ver2_003c input table: keep 馬名・単勝・人気 and show 前走 columns by horizontal scroll ===== */
+.inputTableWrap{
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.inputTableWrap table{
+  width:max-content;
+  min-width:820px;
+  table-layout:fixed;
+}
+.inputTableWrap .stickyMark,
+.inputTableWrap .stickyFrame,
+.inputTableWrap .stickyNo{
   z-index:5;
-  background:#f8fafc;
+  box-shadow:1px 0 0 #e1e8f2;
 }
-.horseInputTable .c-no{
-  font-weight:700;
+.inputTableWrap .stickyMark{width:34px;min-width:34px;left:0;}
+.inputTableWrap .stickyFrame{width:38px;min-width:38px;left:34px;}
+.inputTableWrap .stickyNo{width:54px;min-width:54px;left:72px;}
+.inputTableWrap th:nth-child(4),
+.inputTableWrap td:nth-child(4){width:118px;min-width:118px;}
+.inputTableWrap th:nth-child(5),
+.inputTableWrap td:nth-child(5){width:62px;min-width:62px;}
+.inputTableWrap th:nth-child(6),
+.inputTableWrap td:nth-child(6){width:48px;min-width:48px;}
+.inputTableWrap th:nth-child(7),
+.inputTableWrap td:nth-child(7),
+.inputTableWrap th:nth-child(8),
+.inputTableWrap td:nth-child(8),
+.inputTableWrap th:nth-child(9),
+.inputTableWrap td:nth-child(9){width:66px;min-width:66px;}
+.inputTableWrap input{padding:6px 3px;font-size:15px;text-align:center;}
+.inputTableWrap .horseNameInput{width:110px;min-width:110px;text-align:left;}
+.inputTableWrap .oddsInput{width:56px;min-width:56px;}
+.inputTableWrap .shortInput{width:52px;min-width:52px;}
+@media(max-width:760px){
+  .screen{padding-bottom:104px;}
+  .inputTableWrap{max-height:50vh;}
+  .inputTableWrap table{min-width:720px;}
+  .inputTableWrap th,
+  .inputTableWrap td{padding:5px 4px;}
+  .inputTableWrap .stickyMark{width:32px;min-width:32px;left:0;}
+  .inputTableWrap .stickyFrame{width:36px;min-width:36px;left:32px;}
+  .inputTableWrap .stickyNo{width:50px;min-width:50px;left:68px;}
+  .inputTableWrap th:nth-child(4),
+  .inputTableWrap td:nth-child(4){width:106px;min-width:106px;}
+  .inputTableWrap th:nth-child(5),
+  .inputTableWrap td:nth-child(5){width:56px;min-width:56px;}
+  .inputTableWrap th:nth-child(6),
+  .inputTableWrap td:nth-child(6){width:44px;min-width:44px;}
+  .inputTableWrap th:nth-child(7),
+  .inputTableWrap td:nth-child(7),
+  .inputTableWrap th:nth-child(8),
+  .inputTableWrap td:nth-child(8),
+  .inputTableWrap th:nth-child(9),
+  .inputTableWrap td:nth-child(9){width:62px;min-width:62px;}
+  .inputTableWrap .horseNameInput{width:98px;min-width:98px;}
+  .inputTableWrap .oddsInput{width:50px;min-width:50px;}
+  .inputTableWrap .shortInput{width:48px;min-width:48px;}
+  .bottomBar.actionBar{position:sticky;bottom:0;z-index:20;background:#fff;padding:8px 0;grid-template-columns:1fr 1.7fr;}
+}
+
+
+/* ===== Ver2_003d fixes ===== */
+.inputTableWrap{
+  overflow-x:auto;
+  overflow-y:auto;
+  max-height:50vh;
+  scroll-padding-left:0;
+}
+.inputTableWrap table{
+  min-width:860px;
+}
+.inputTableWrap .stickyMark{width:34px;min-width:34px;left:0;}
+.inputTableWrap .stickyFrame{width:36px;min-width:36px;left:34px;}
+.inputTableWrap .stickyNo{width:54px;min-width:54px;left:70px;}
+.inputTableWrap th:nth-child(4),
+.inputTableWrap td:nth-child(4){width:124px;min-width:124px;}
+.inputTableWrap th:nth-child(5),
+.inputTableWrap td:nth-child(5){width:64px;min-width:64px;}
+.inputTableWrap th:nth-child(6),
+.inputTableWrap td:nth-child(6){width:50px;min-width:50px;}
+.inputTableWrap th:nth-child(7),
+.inputTableWrap td:nth-child(7),
+.inputTableWrap th:nth-child(8),
+.inputTableWrap td:nth-child(8),
+.inputTableWrap th:nth-child(9),
+.inputTableWrap td:nth-child(9){width:70px;min-width:70px;}
+.inputTableWrap .horseNameInput{width:116px;min-width:116px;text-align:left;}
+.inputTableWrap .oddsInput{width:58px;min-width:58px;}
+.inputTableWrap .shortInput{width:52px;min-width:52px;}
+.inputTableWrap input[readonly]{background:#f8fafc;color:#334155;}
+@media(max-width:760px){
+  .inputTableWrap table{min-width:820px;}
+  .inputTableWrap th:nth-child(4),
+  .inputTableWrap td:nth-child(4){width:118px;min-width:118px;}
+  .inputTableWrap .horseNameInput{width:110px;min-width:110px;}
+  .inputTableWrap th:nth-child(7),
+  .inputTableWrap td:nth-child(7),
+  .inputTableWrap th:nth-child(8),
+  .inputTableWrap td:nth-child(8),
+  .inputTableWrap th:nth-child(9),
+  .inputTableWrap td:nth-child(9){width:68px;min-width:68px;}
+}
+
+/* ===== Ver2_003e compact full input table + header/search visibility fixes ===== */
+.screen{
+  padding-top:16px;
+  scroll-padding-top:70px;
+}
+.inputTableWrap{
+  overflow-x:hidden;
+  overflow-y:auto;
+  max-height:52vh;
+}
+.inputTableWrap table{
+  width:100%;
+  min-width:0;
+  table-layout:fixed;
+}
+.inputTableWrap .stickyMark,
+.inputTableWrap .stickyFrame,
+.inputTableWrap .stickyNo{
+  position:static;
+  left:auto;
+  box-shadow:none;
+}
+.inputTableWrap th,
+.inputTableWrap td{
+  padding:4px 3px;
+  font-size:14px;
+}
+.inputTableWrap th:nth-child(1),
+.inputTableWrap td:nth-child(1){width:6.5%;}
+.inputTableWrap th:nth-child(2),
+.inputTableWrap td:nth-child(2){width:8%;}
+.inputTableWrap th:nth-child(3),
+.inputTableWrap td:nth-child(3){width:10%;}
+.inputTableWrap th:nth-child(4),
+.inputTableWrap td:nth-child(4){width:20%;}
+.inputTableWrap th:nth-child(5),
+.inputTableWrap td:nth-child(5){width:10%;}
+.inputTableWrap th:nth-child(6),
+.inputTableWrap td:nth-child(6){width:7.5%;}
+.inputTableWrap th:nth-child(7),
+.inputTableWrap td:nth-child(7),
+.inputTableWrap th:nth-child(8),
+.inputTableWrap td:nth-child(8),
+.inputTableWrap th:nth-child(9),
+.inputTableWrap td:nth-child(9){width:12.7%;}
+.inputTableWrap input{
+  width:100% !important;
+  min-width:0 !important;
+  padding:6px 2px;
+  font-size:14px;
   text-align:center;
 }
+.inputTableWrap .horseNameInput{
+  width:100% !important;
+  min-width:0 !important;
+  text-align:left;
+  font-size:13px;
+}
+.inputTableWrap .frameCell{
+  min-width:24px;
+  padding:2px 3px;
+}
+.inputTableWrap .markCell{
+  font-size:16px;
+}
+@media(max-width:760px){
+  .screen{padding-top:14px;padding-bottom:108px;}
+  .inputTableWrap{max-height:50vh;}
+  .inputTableWrap th,
+  .inputTableWrap td{font-size:13px;padding:4px 2px;}
+  .inputTableWrap input{font-size:13px;padding:6px 1px;}
+  .inputTableWrap .horseNameInput{font-size:12px;}
+  .inputTableWrap th:nth-child(1),
+  .inputTableWrap td:nth-child(1){width:6%;}
+  .inputTableWrap th:nth-child(2),
+  .inputTableWrap td:nth-child(2){width:7%;}
+  .inputTableWrap th:nth-child(3),
+  .inputTableWrap td:nth-child(3){width:9%;}
+  .inputTableWrap th:nth-child(4),
+  .inputTableWrap td:nth-child(4){width:19%;}
+  .inputTableWrap th:nth-child(5),
+  .inputTableWrap td:nth-child(5){width:9%;}
+  .inputTableWrap th:nth-child(6),
+  .inputTableWrap td:nth-child(6){width:7%;}
+  .inputTableWrap th:nth-child(7),
+  .inputTableWrap td:nth-child(7),
+  .inputTableWrap th:nth-child(8),
+  .inputTableWrap td:nth-child(8),
+  .inputTableWrap th:nth-child(9),
+  .inputTableWrap td:nth-child(9){width:14.3%;}
+}
+
+/* ===== Ver2_003f: input table final mobile behavior =====
+   - Keep 馬名・単勝・人気 in the table.
+   - Fix only 枠 and 馬番 on the left while horizontal scrolling.
+   - Allow scrolling to 前走・前2・前3 with 馬番 always visible.
+=========================================================== */
+.inputTableWrap{
+  overflow:auto;
+  -webkit-overflow-scrolling:touch;
+  max-height:calc(100vh - 250px);
+}
+.inputTableWrap table{
+  table-layout:fixed;
+  width:auto;
+  min-width:610px;
+}
+.inputTableWrap th,
+.inputTableWrap td{
+  padding:5px 4px;
+}
+.inputTableWrap th:nth-child(1),
+.inputTableWrap td:nth-child(1){width:36px;min-width:36px;}
+.inputTableWrap th:nth-child(2),
+.inputTableWrap td:nth-child(2){width:42px;min-width:42px;}
+.inputTableWrap th:nth-child(3),
+.inputTableWrap td:nth-child(3){width:56px;min-width:56px;}
+.inputTableWrap th:nth-child(4),
+.inputTableWrap td:nth-child(4){width:118px;min-width:118px;}
+.inputTableWrap th:nth-child(5),
+.inputTableWrap td:nth-child(5){width:64px;min-width:64px;}
+.inputTableWrap th:nth-child(6),
+.inputTableWrap td:nth-child(6){width:46px;min-width:46px;}
+.inputTableWrap th:nth-child(7),
+.inputTableWrap td:nth-child(7),
+.inputTableWrap th:nth-child(8),
+.inputTableWrap td:nth-child(8),
+.inputTableWrap th:nth-child(9),
+.inputTableWrap td:nth-child(9){width:78px;min-width:78px;}
+.inputTableWrap .stickyMark{
+  position:static !important;
+  left:auto !important;
+  z-index:auto !important;
+}
+.inputTableWrap .stickyFrame{
+  position:sticky !important;
+  left:0 !important;
+  z-index:8 !important;
+  background:#fff !important;
+  box-shadow:1px 0 0 #e1e8f2;
+}
+.inputTableWrap .stickyNo{
+  position:sticky !important;
+  left:42px !important;
+  z-index:8 !important;
+  background:#fff !important;
+  box-shadow:1px 0 0 #e1e8f2;
+}
+.inputTableWrap thead .stickyFrame,
+.inputTableWrap thead .stickyNo{
+  z-index:10 !important;
+  background:#f5f7fb !important;
+}
+.inputTableWrap .horseNameInput{width:108px;min-width:108px;}
+.inputTableWrap .oddsInput{width:56px;min-width:56px;}
+.inputTableWrap .shortInput{width:62px;min-width:62px;}
+.inputTableWrap td:nth-child(3) .shortInput{width:48px;min-width:48px;}
+.inputTableWrap td:nth-child(6) .shortInput{width:38px;min-width:38px;}
+@media(max-width:760px){
+  .inputTableWrap{max-height:58vh;}
+  .inputTableWrap table{min-width:610px;}
+  .inputTableWrap th,
+  .inputTableWrap td{padding:5px 3px;}
+  .inputTableWrap .horseNameInput{width:106px;min-width:106px;}
+  .inputTableWrap .shortInput{width:60px;min-width:60px;}
+  .inputTableWrap td:nth-child(3) .shortInput{width:46px;min-width:46px;}
+  .inputTableWrap td:nth-child(6) .shortInput{width:36px;min-width:36px;}
+}
+
+
+/* ===== Ver2_003g: combined text input + stable input layout ===== */
+.wideField{grid-column:1 / -1;}
+.screen{padding-bottom:132px;}
+.bottomBar.actionBar{
+  position:sticky;
+  bottom:0;
+  z-index:30;
+  background:#fff;
+  padding:10px 0 12px;
+  box-shadow:0 -4px 12px rgba(15,23,42,.08);
+}
+@media(max-width:760px){
+  .grid2 .wideField{grid-column:auto;}
+  .screen{padding-bottom:150px;}
+  .bottomBar.actionBar{grid-template-columns:1fr 1.6fr;}
+  .bottomBar.actionBar .red{grid-column:1 / -1;}
+  .inputTableWrap{max-height:54vh;}
+  .inputTableWrap table{min-width:650px;}
+  .inputTableWrap th:nth-child(1),
+  .inputTableWrap td:nth-child(1){width:34px;min-width:34px;}
+  .inputTableWrap th:nth-child(2),
+  .inputTableWrap td:nth-child(2){width:42px;min-width:42px;}
+  .inputTableWrap th:nth-child(3),
+  .inputTableWrap td:nth-child(3){width:56px;min-width:56px;}
+  .inputTableWrap th:nth-child(4),
+  .inputTableWrap td:nth-child(4){width:118px;min-width:118px;}
+  .inputTableWrap th:nth-child(5),
+  .inputTableWrap td:nth-child(5){width:60px;min-width:60px;}
+  .inputTableWrap th:nth-child(6),
+  .inputTableWrap td:nth-child(6){width:44px;min-width:44px;}
+  .inputTableWrap th:nth-child(7),
+  .inputTableWrap td:nth-child(7),
+  .inputTableWrap th:nth-child(8),
+  .inputTableWrap td:nth-child(8),
+  .inputTableWrap th:nth-child(9),
+  .inputTableWrap td:nth-child(9){width:78px;min-width:78px;}
+}
+
+
+/* 003r: detail tabs are two buttons only */
+.tabs.tabs2{grid-template-columns:repeat(2,1fr)!important;}
+@media(max-width:760px){.tabs.tabs2{grid-template-columns:1fr 1fr!important;}}
+
+/* 003r: prevent scrolled horse names from showing through fixed columns */
+.tableWrap .stickyMark,
+.tableWrap .stickyFrame,
+.tableWrap .stickyNo{
+  background:#fff!important;
+  background-clip:padding-box!important;
+  z-index:8!important;
+  box-shadow:1px 0 0 #e1e8f2;
+}
+.tableWrap thead .stickyMark,
+.tableWrap thead .stickyFrame,
+.tableWrap thead .stickyNo{
+  background:#f5f7fb!important;
+  z-index:12!important;
+}
+.readonlyRow input,.readonlyRow button{display:none!important;}
+
+/* ===== Ver2_003s: saved result is read-only + stronger sticky columns ===== */
+.resultReadonly input,
+.resultReadonly select,
+.resultReadonly textarea,
+.resultReadonly button,
+.resultReadonly .small,
+.resultReadonly [data-finish],
+.resultReadonly [data-pay]{display:none!important;}
+.resultReadonly .finishRow{grid-template-columns:46px 58px 1fr!important;}
+.resultReadonly .payRow{grid-template-columns:1fr 90px!important;}
+.resultReadonly .finishRow,
+.resultReadonly .payRow{background:#fff;border-bottom:1px solid #eef2f7;padding:6px 0;}
+.resultReadonly .finishRow:last-child,
+.resultReadonly .payRow:last-child{border-bottom:none;}
+.resultReadonlyBar{grid-template-columns:1fr 1fr!important;}
+.resultReadonlyBar .red{display:none!important;}
+
+/* Detail entry table: make sticky columns fully opaque and prevent text bleed-through */
+.tableWrap:not(.inputTableWrap){
+  position:relative;
+  background:#fff;
+  isolation:isolate;
+}
+.tableWrap:not(.inputTableWrap) table{
+  border-collapse:separate!important;
+  border-spacing:0;
+  background:#fff;
+}
+.tableWrap:not(.inputTableWrap) th,
+.tableWrap:not(.inputTableWrap) td{
+  background:#fff;
+}
+.tableWrap:not(.inputTableWrap) th{background:#f5f7fb;}
+.tableWrap:not(.inputTableWrap) .stickyMark,
+.tableWrap:not(.inputTableWrap) .stickyFrame,
+.tableWrap:not(.inputTableWrap) .stickyNo{
+  position:sticky!important;
+  background:#fff!important;
+  background-color:#fff!important;
+  background-clip:border-box!important;
+  opacity:1!important;
+  z-index:40!important;
+  overflow:hidden;
+  box-shadow:2px 0 0 #e1e8f2;
+}
+.tableWrap:not(.inputTableWrap) thead .stickyMark,
+.tableWrap:not(.inputTableWrap) thead .stickyFrame,
+.tableWrap:not(.inputTableWrap) thead .stickyNo{
+  background:#f5f7fb!important;
+  background-color:#f5f7fb!important;
+  z-index:50!important;
+}
+.tableWrap:not(.inputTableWrap) .stickyMark{left:0!important; width:44px; min-width:44px; max-width:44px;}
+.tableWrap:not(.inputTableWrap) .stickyFrame{left:44px!important; width:44px; min-width:44px; max-width:44px;}
+.tableWrap:not(.inputTableWrap) .stickyNo{left:88px!important; width:58px; min-width:58px; max-width:58px;}
+.tableWrap:not(.inputTableWrap) .stickyMark::before,
+.tableWrap:not(.inputTableWrap) .stickyFrame::before,
+.tableWrap:not(.inputTableWrap) .stickyNo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:inherit;
+  z-index:-1;
+}
+@media(max-width:760px){
+  .tableWrap:not(.inputTableWrap) .stickyMark{width:42px; min-width:42px; max-width:42px;}
+  .tableWrap:not(.inputTableWrap) .stickyFrame{left:42px!important; width:42px; min-width:42px; max-width:42px;}
+  .tableWrap:not(.inputTableWrap) .stickyNo{left:84px!important; width:56px; min-width:56px; max-width:56px;}
+}
+
+/* ===== 20260702 fixes: fully opaque fixed entry columns ===== */
+.tableWrap,
+.inputTableWrap{
+  isolation:isolate;
+  background:#fff;
+}
+.tableWrap table,
+.inputTableWrap table{
+  border-collapse:separate!important;
+  border-spacing:0!important;
+  background:#fff;
+}
+.tableWrap .stickyMark,
+.tableWrap .stickyFrame,
+.tableWrap .stickyNo,
+.inputTableWrap .stickyMark,
+.inputTableWrap .stickyFrame,
+.inputTableWrap .stickyNo{
+  position:sticky!important;
+  background:#fff!important;
+  background-color:#fff!important;
+  background-clip:border-box!important;
+  opacity:1!important;
+  overflow:hidden!important;
+  z-index:80!important;
+  box-shadow:2px 0 0 #e1e8f2, -1px 0 0 #fff!important;
+  transform:translateZ(0);
+}
+.tableWrap thead .stickyMark,
+.tableWrap thead .stickyFrame,
+.tableWrap thead .stickyNo,
+.inputTableWrap thead .stickyMark,
+.inputTableWrap thead .stickyFrame,
+.inputTableWrap thead .stickyNo{
+  background:#f5f7fb!important;
+  background-color:#f5f7fb!important;
+  z-index:90!important;
+}
+.tableWrap .stickyMark::after,
+.tableWrap .stickyFrame::after,
+.tableWrap .stickyNo::after,
+.inputTableWrap .stickyMark::after,
+.inputTableWrap .stickyFrame::after,
+.inputTableWrap .stickyNo::after{
+  content:"";
+  position:absolute;
+  inset:-1px;
+  background:inherit;
+  z-index:-1;
+  pointer-events:none;
+}
+.inputTableWrap .stickyMark{left:0!important; width:36px!important; min-width:36px!important; max-width:36px!important;}
+.inputTableWrap .stickyFrame{left:36px!important; width:42px!important; min-width:42px!important; max-width:42px!important;}
+.inputTableWrap .stickyNo{left:78px!important; width:56px!important; min-width:56px!important; max-width:56px!important;}
+.tableWrap:not(.inputTableWrap) .stickyMark{left:0!important; width:44px!important; min-width:44px!important; max-width:44px!important;}
+.tableWrap:not(.inputTableWrap) .stickyFrame{left:44px!important; width:44px!important; min-width:44px!important; max-width:44px!important;}
+.tableWrap:not(.inputTableWrap) .stickyNo{left:88px!important; width:58px!important; min-width:58px!important; max-width:58px!important;}
+@media(max-width:760px){
+  .inputTableWrap .stickyMark{width:34px!important; min-width:34px!important; max-width:34px!important;}
+  .inputTableWrap .stickyFrame{left:34px!important; width:42px!important; min-width:42px!important; max-width:42px!important;}
+  .inputTableWrap .stickyNo{left:76px!important; width:56px!important; min-width:56px!important; max-width:56px!important;}
+  .tableWrap:not(.inputTableWrap) .stickyMark{width:42px!important; min-width:42px!important; max-width:42px!important;}
+  .tableWrap:not(.inputTableWrap) .stickyFrame{left:42px!important; width:42px!important; min-width:42px!important; max-width:42px!important;}
+  .tableWrap:not(.inputTableWrap) .stickyNo{left:84px!important; width:56px!important; min-width:56px!important; max-width:56px!important;}
+}
+
+/* Ver2-032 rule consult category check UI */
+.categoryCheckBox{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin:6px 0 10px;
+}
+.categoryCheckLine{
+  padding:8px 10px;
+  border:1px solid #d9e2ef;
+  border-radius:10px;
+  background:#fff;
+}
+.categoryCheckLine input{ margin-right:8px; }
+
+.bad{color:#dc2626;font-weight:800}.proposalCard{background:#fbfdff}.answerCard{background:#f8fafc}.consultAnswer{margin-top:8px}
+
+/* rev2-034: conversational rule consult answer */
+.aiTalk{
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:14px;
+  padding:12px;
+  line-height:1.7;
+}
+.answerOption{
+  border:1px solid #dbeafe;
+  background:#eff6ff;
+  border-radius:14px;
+  padding:10px;
+  margin:10px 0;
+}
+.answerOption p{margin:6px 0 8px;line-height:1.6;}
+
+/* ver2-007 AI予想レポート */
+.aiPredictionReport{border-left:4px solid #2563eb;background:#f8fbff}
+.aiPredictionReport h4{color:#1d4ed8}
+.reportBody p{margin:0 0 10px;line-height:1.65}
+.reportBody b{color:#111827}
+.aiReportMeta{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:10px}
+.aiReportMeta span{background:#fff;border:1px solid #dbeafe;border-radius:10px;padding:8px 10px}
+.aiResultReport{border-left:4px solid #16a34a;background:#f7fef9}
+.aiResultReport .title{color:#166534}
+
+
+/* ver2-009 AIカルテ */
+.karteGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.karteBox{border:1px solid #d7dfed;border-radius:10px;padding:10px;background:#fff}
+.karteBox h4{margin:0 0 6px;padding:0;background:transparent;font-size:15px}
+.karteBox p{margin:0;line-height:1.65}
+.karteBox.good{background:#ecfdf5;border-color:#86efac}
+.karteBox.close{background:#fff7ed;border-color:#fdba74}
+.karteBox.bad{background:#fff1f2;border-color:#fecdd3}
+.karteBox.improve{background:#eff6ff;border-color:#bfdbfe}
+@media(max-width:760px){.karteGrid{grid-template-columns:1fr}}
+/* ver2-010 AIカルテ整理 */
+.aiMemo{margin:12px 0 8px;padding:10px;border-left:4px solid #2563eb;background:#eff6ff;border-radius:8px;line-height:1.65}
+.analysisDetails summary{cursor:pointer;font-weight:700;padding:4px 0}
+.analysisDetails[open] summary{margin-bottom:10px}
+.miniPill{display:inline-block;margin:4px 5px 4px 0;padding:4px 8px;border-radius:999px;background:#eef2ff;border:1px solid #c7d2fe;font-size:12px;color:#1e3a8a}
+.pillList{margin:6px 0 10px}
+.nextConsultBox{margin-top:10px}
+.aiCarry .title{margin-bottom:6px}
+
+/* ver2-011 表示整理 */
+.compactList{margin:6px 0 8px 18px;padding:0;line-height:1.55}
+.compactList li{margin:2px 0;white-space:normal}
+.toggleBtn{width:auto;display:inline-block;margin:0 0 8px 0}
+.toggleContent[hidden]{display:none !important}
+.toggleContent{margin-top:8px}
+
+.aiOneLine{
+  background:#f8fafc;
+  border-left:4px solid #2563eb;
+  padding:10px 12px;
+  border-radius:10px;
+  line-height:1.7;
+}
+
+/* ver2-014 sample-aware AI evidence */
+.aiEvidenceBox{border:1px solid #dbeafe;background:#ffffff;border-radius:10px;padding:10px;margin:10px 0}
+.aiEvidenceBox h5{margin:0 0 8px;color:#1d4ed8;font-size:15px}
+.aiEvidenceBox .tableWrap{max-height:none}
+.aiConfidenceBox{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin:10px 0}
+.aiConfidenceBox span{background:#fff;border:1px solid #e0e7ff;border-radius:10px;padding:8px 10px}
+
+/* ver2-020 ai karte consult */
+.aiCarryLine{align-items:flex-start;gap:8px}.carrySection{border:1px solid #e5e7eb;border-radius:10px;padding:10px;background:#fff}.carrySection h4{margin:0 0 8px}.carryMini{border:1px solid #e5e7eb;border-radius:10px;padding:10px;background:#fff}.aiCarryInline{margin:10px 0}.compactList{margin:6px 0 0 18px;padding:0}.compactList li{margin:3px 0}
+
+/* ver2-047 adoption final card preview */
+.adoptionChoiceCard{
+  border:1px solid #dbeafe;
+  background:#f8fbff;
+  border-radius:12px;
+  padding:12px;
+  margin:10px 0;
+}
+.adoptCardHead{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:flex-start;
+  margin-bottom:8px;
+}
+.adoptTopThemes{
+  font-weight:800;
+  color:#1d4ed8;
+  background:#eff6ff;
+  border:1px solid #bfdbfe;
+  border-radius:999px;
+  padding:4px 8px;
+  white-space:nowrap;
+  font-size:12px;
+}
+.adoptPriority{
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:10px;
+  padding:8px;
+  line-height:1.7;
+  margin:8px 0;
+}
+.adoptMemo{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:10px;
+  padding:8px;
+  line-height:1.7;
+  margin:8px 0;
+}
+.compactHint{ margin:8px 0; }
+.adoptionImpactSummary{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:6px;
+  margin-top:8px;
+}
+.adoptionImpactRow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px solid #e5e7eb;
+  padding:6px 0;
+  font-weight:800;
+}
+.adoptionImpactRow.improve{ color:#2563eb; }
+.adoptionImpactRow.down{ color:#dc2626; }
+.adoptionImpactRow.same{ color:#111827; }
+.adoptionImpactWarning{
+  margin-top:8px;
+  color:#dc2626;
+  font-weight:900;
+  line-height:1.6;
+}
+@media(max-width:560px){
+  .adoptCardHead{ display:block; }
+  .adoptTopThemes{ display:inline-block; margin-top:6px; white-space:normal; }
+  .adoptionImpactSummary{ grid-template-columns:1fr; }
+}
+
+/* v048 final adoption polish */
+.aiRank{display:inline-block;padding:2px 0;font-weight:800;}
+.aiRankHigh{color:#15803d;}
+.aiRankMid{color:#b45309;}
+.aiRankLow{color:#4b5563;}
+.aiConsultSummary{border:1px solid #e5e7eb;border-radius:10px;padding:8px;margin-top:8px;background:#fff;}
+.aiConsultSummary summary{cursor:pointer;font-weight:800;}
+.adoptionReturnWarning[hidden]{display:none!important;}
+
+/* ===== Ver2_054: mobile input table compact past columns =====
+   目的: テキスト入力後の編集表で、馬番を固定したまま
+   前走・前2・前3をスマホ幅でも同時に確認しやすくする。
+=========================================================== */
+@media(max-width:760px){
+  .inputTableWrap{
+    max-height:58vh;
+    overflow:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .inputTableWrap table{
+    table-layout:fixed !important;
+    width:max-content !important;
+    min-width:392px !important;
+  }
+  .inputTableWrap th,
+  .inputTableWrap td{
+    padding:4px 2px !important;
+    font-size:13px !important;
+  }
+  .inputTableWrap th:nth-child(1),
+  .inputTableWrap td:nth-child(1){width:26px !important;min-width:26px !important;}
+  .inputTableWrap th:nth-child(2),
+  .inputTableWrap td:nth-child(2){width:30px !important;min-width:30px !important;}
+  .inputTableWrap th:nth-child(3),
+  .inputTableWrap td:nth-child(3){width:46px !important;min-width:46px !important;}
+  .inputTableWrap th:nth-child(4),
+  .inputTableWrap td:nth-child(4){width:64px !important;min-width:64px !important;}
+  .inputTableWrap th:nth-child(5),
+  .inputTableWrap td:nth-child(5){width:38px !important;min-width:38px !important;}
+  .inputTableWrap th:nth-child(6),
+  .inputTableWrap td:nth-child(6){width:30px !important;min-width:30px !important;}
+  .inputTableWrap th:nth-child(7),
+  .inputTableWrap td:nth-child(7),
+  .inputTableWrap th:nth-child(8),
+  .inputTableWrap td:nth-child(8),
+  .inputTableWrap th:nth-child(9),
+  .inputTableWrap td:nth-child(9){width:46px !important;min-width:46px !important;}
+
+  /* 入力画面では馬番を見失わないよう、枠＋馬番だけ固定する */
+  .inputTableWrap .stickyMark{
+    position:static !important;
+    left:auto !important;
+    z-index:auto !important;
+  }
+  .inputTableWrap .stickyFrame{
+    position:sticky !important;
+    left:0 !important;
+    z-index:12 !important;
+    background:#fff !important;
+    box-shadow:1px 0 0 #e1e8f2;
+  }
+  .inputTableWrap .stickyNo{
+    position:sticky !important;
+    left:30px !important;
+    z-index:12 !important;
+    background:#fff !important;
+    box-shadow:1px 0 0 #e1e8f2;
+  }
+  .inputTableWrap thead .stickyFrame,
+  .inputTableWrap thead .stickyNo{
+    z-index:14 !important;
+    background:#f5f7fb !important;
+  }
+
+  .inputTableWrap input{
+    padding:5px 2px !important;
+    font-size:14px !important;
+    text-align:center !important;
+  }
+  .inputTableWrap .horseNameInput{
+    width:60px !important;
+    min-width:60px !important;
+    text-align:left !important;
+  }
+  .inputTableWrap .oddsInput{
+    width:34px !important;
+    min-width:34px !important;
+  }
+  .inputTableWrap .shortInput{
+    width:40px !important;
+    min-width:40px !important;
+  }
+  .inputTableWrap td:nth-child(3) .shortInput{
+    width:40px !important;
+    min-width:40px !important;
+  }
+  .inputTableWrap td:nth-child(6) .shortInput{
+    width:26px !important;
+    min-width:26px !important;
+  }
+}
+
+/* ver2-056: 保存レース詳細の遷移ボタンをスマホでも2列表示に固定 */
+.detailNavBlock{margin:10px 0 12px;}
+.detailNavGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.detailNavGrid button{margin:0;padding:10px 8px;}
+.textInputNavBtn{margin:10px 0 0;border-color:#16a34a;color:#15803d;background:#fff;}
+@media(max-width:760px){
+  .detailNavGrid{grid-template-columns:1fr 1fr!important;gap:8px;}
+  .detailNavGrid button{font-size:15px;padding:10px 6px;}
+}
+
+
+/* ===== Ver2_058: validation screen scroll fix =====
+   検証結果画面は .screen 内で縦スクロールさせ、
+   Android Chromeでも検索ボタンまで到達できるようにする。 */
+.validationScreen{
+  min-height:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  padding-bottom:120px;
+}
+.validationScreen .card{
+  overflow:visible;
+}
+@media(max-width:760px){
+  .validationScreen{
+    padding-bottom:140px;
+  }
+}
+
+/* 088: top menu click fallback */
+.topNavBtn{display:block;width:100%;margin:6px 0;padding:11px 12px;font-size:16px;font-weight:700;border:1px solid #0b65d8;border-radius:8px;background:#0b72d9;color:#fff;text-align:center;text-decoration:none;cursor:pointer;touch-action:manipulation;pointer-events:auto;}
+.topMenuCard,.topMenuCard *{pointer-events:auto!important;}
+
+.buttonLike{display:inline-block;text-align:center;cursor:pointer;padding:10px 12px;border-radius:8px;border:1px solid #ccc;}
+
+
+/* 20260707 input/result safety fixes */
+.inputTableWrap .oddsInput{width:86px!important;min-width:86px!important;}
+.tableWrap .stickyMark,.tableWrap .stickyFrame,.tableWrap .stickyNo{background:#fff!important;background-clip:padding-box!important;}
+.tableWrap thead .stickyMark,.tableWrap thead .stickyFrame,.tableWrap thead .stickyNo{background:#f5f7fb!important;}
+.inputTableWrap{max-height:72vh;}
+.inputTableWrap table{min-width:760px;}
+
+/* Ver2-225: relation grouped display */
+.relBox{display:block;line-height:1.45;white-space:normal;min-width:180px;}
+.relGroup{margin:0 0 10px 0;padding:6px 8px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;}
+.relGroupTitle{font-weight:700;margin-bottom:4px;}
+.relItem{margin:6px 0 8px 0;padding-left:2px;}
+.relHorse{font-weight:600;margin-bottom:2px;}
+.relItem ul{margin:2px 0 0 1.2em;padding:0;}
+.relItem li{margin:1px 0;}
