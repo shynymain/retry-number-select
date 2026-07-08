@@ -294,8 +294,7 @@ function transition59PatternLabels(ds, vs){
   if(ds.every(v=>v===6 || v===9)) add('69系');
 
   return labels;
-}
-                                                             }
+}                                                             }
 function neighborHorseDigitsForPast1(r,h){
   const no=int(h&&h.no); if(!r || !no) return [];
   const horses=(r.horses||[]);
